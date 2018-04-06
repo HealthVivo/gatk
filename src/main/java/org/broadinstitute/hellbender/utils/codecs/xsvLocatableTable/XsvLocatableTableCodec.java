@@ -260,6 +260,7 @@ public final class XsvLocatableTableCodec extends AsciiFeatureCodec<XsvTableFeat
                 headerToIndex = IntStream.range(0, header.size()).boxed()
                         .collect(Collectors.toMap(i-> header.get(i), Function.identity()));
 
+                //TODO: Double check that this works when doing an index AND datasource name is not blank.
                 finalContigColumn = StringUtils.isNumeric(inputContigColumn) ? header.get(Integer.valueOf(inputContigColumn))
                         : determinePrefixForHeader() + inputContigColumn;
                 finalStartColumn = StringUtils.isNumeric(inputStartColumn) ? header.get(Integer.valueOf(inputStartColumn))
@@ -428,7 +429,7 @@ public final class XsvLocatableTableCodec extends AsciiFeatureCodec<XsvTableFeat
      * Throw an exception if the given column name cannot be used for one of the locatable columns.
      * @param columnName candidate column name for one of the locatable fields (contig, start, or end)
      */
-    public static void validateLocatableColumnName(String columnName) {
+    public static void validateLocatableColumnName(final String columnName) {
         Utils.validateArg(!StringUtils.isEmpty(columnName), "column header is blank.");
         Utils.validateArg(!NumberUtils.isCreatable(columnName), "column header cannot be a number: " + columnName);
     }
